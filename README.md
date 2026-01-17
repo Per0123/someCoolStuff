@@ -11,7 +11,7 @@ Here you'll find experiments like solar system simulations, a Wolfenstein-like d
 Clone the repo:
 
 ```bash
-git clone https://github.com/Per0213/someCoolStuff.git
+git clone https://github.com/Per0123/someCoolStuff
 cd someCoolStuff
 ```
 
