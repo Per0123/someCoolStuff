@@ -1,7 +1,7 @@
 # someCoolStuff
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=plastic)
-s
+
 Welcome to **someCoolStuff** – a collection of small, fun Python projects!
 
 Here you'll find experiments like solar system simulations, a Wolfenstein-like demo, and more small code snippets. This repo is meant for learning, experimenting, and having fun with Python.
