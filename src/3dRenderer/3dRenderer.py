@@ -3,7 +3,7 @@ import math
 
 # ---------- INIT ----------
 pygame.init()
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 900
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("3dRenderer")
 clock = pygame.time.Clock()
@@ -31,10 +31,11 @@ FOV = math.pi / 3
 HALF_FOV = FOV / 2
 NUM_RAYS = WIDTH // 2
 EPS = 1e-6
+MAX_WALL_HEIGHT = HEIGHT * 2
 
 # Mini-map settings
-MINIMAP_SCALE = 8  # smaller squares
-MINIMAP_POS = (10, 10)  # top-left corner
+MINIMAP_SCALE = 8
+MINIMAP_POS = (10, 10)
 
 # ---------- PLAYER ----------
 px, py = 150, 150
@@ -44,6 +45,7 @@ ROT = 0.04
 
 # ---------- TEXTURE ----------
 wall_texture = pygame.image.load("wall.png").convert()
+wall_texture = pygame.transform.scale(wall_texture, (64, 64))
 
 # ---------- RAYCAST ----------
 def cast_rays():
@@ -87,23 +89,25 @@ def cast_rays():
                 map_y += step_y
                 hit_vertical = False
 
+            # ---- bounds check ----
             if not (0 <= map_x < MAP_W and 0 <= map_y < MAP_H):
                 break
 
             if WORLD_MAP[map_y][map_x] == "1":
                 # fish-eye correction
                 depth *= math.cos(pa - angle)
-                wall_h = 30000 / (depth + 0.0001)
 
-                # Correct texture coordinate
+                # clamp wall height
+                wall_h = min(30000 / (depth + EPS), MAX_WALL_HEIGHT)
+
+                # compute texture coordinate safely
                 if hit_vertical:
                     hit_pos = py + depth * sin_a
                 else:
                     hit_pos = px + depth * cos_a
-
                 hit_pos %= TILE
-                tex_x = min(int(hit_pos / TILE * wall_texture.get_width()),
-                            wall_texture.get_width() - 1)
+                tex_x = int(hit_pos / TILE * wall_texture.get_width())
+                tex_x = max(0, min(wall_texture.get_width() - 1, tex_x))
 
                 column = wall_texture.subsurface(tex_x, 0, 1, wall_texture.get_height())
                 column = pygame.transform.scale(column, (2, int(wall_h)))
