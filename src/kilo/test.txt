@@ -1,5 +1,4 @@
 Hello.
-This is a test file for my kilo.
-There should be 5 lines of text.
+This is a test file for my Kilo text editor.
 I hope you are having a good day.
 :)
