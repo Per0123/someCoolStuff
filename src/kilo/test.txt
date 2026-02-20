@@ -1,4 +1,0 @@
-Hello.
-This is a test file for my Kilo text editor.
-I hope you are having a good day.
-:)
